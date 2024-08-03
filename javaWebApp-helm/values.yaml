@@ -20,23 +20,14 @@ readinessProbe:
     port: 8080
   initialDelaySeconds: 30
   periodSeconds: 10
-  
+
 service:
   type: ClusterIP
   port: 80
 
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  host: "java-web-app.local"
+  port: 80
+  path: /
+  pathType: Prefix
+  serviceName: "java-web-app-service"
