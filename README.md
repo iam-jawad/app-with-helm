@@ -28,6 +28,7 @@ Following are the configurations of java app.
 - Language **Java** Version **21**
 - Spring boot version **3.3.2**
 - Packaging type **jar**
+- Project has only one dependency which is **Spring Web**
 
 When you will run this application so it will show following text on root of domain.\
 **Hi, This is Jawad's DevOps assessment.**\
