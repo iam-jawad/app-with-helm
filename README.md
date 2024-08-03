@@ -14,40 +14,40 @@ environment you are trying to build docker image.
 ### If installing helm chart on K8S cluster
 If you are trying to install helm chart in K8S cluster so please make sure following three things.
 1) Check if helm is installed on environemnt otherwise **run-helm.sh** will through an error that "Helm is not installed." and exit.
-2) You must have installed **Nginx ingress controller** on your K8S cluster. You can install it with following command.
+2) You must have installed **Nginx ingress controller** on your K8S cluster. You can install it with following command.\
 ```kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml```
 3) Whatever host name you will set in ingress, please make sure to add it in your ```/etc/hosts``` file so that you can access web app deployed on cluster easily. (This step is for local deployment only)
 
 ## Java Web App
 
-The folder **javaWebApp** which is on root of this repo contains source code of a basic java web app which was created using [Spring Boot](start.spring.io).
+The folder **javaWebApp** which is on root of this repo contains source code of a basic java web app which was created using [Spring Boot](start.spring.io).\
 Following are the configurations of java app.
 - Build automation tool **maven**
 - Language **Java** Version **21**
 - Spring boot version **3.3.2**
 - Packaging type **jar**
 
-When you will run this application so it will show following text on root of domain.
-**Hi, This is Jawad's DevOps assessment.**
+When you will run this application so it will show following text on root of domain.\
+**Hi, This is Jawad's DevOps assessment.**\
 If you see above message after deploying and hitting the app on root of domain so that means application is working perfect.
 
 ## Dockerfile
 
-To containerize the app a docker file is also given on root of this repo.
-This docker file is building image from jdk 21 official Java docker image and getting a pre build **.jar** from following path in repo.
-```javaWebApp/target/javaWebApp-0.0.1-SNAPSHOT.jar```
+To containerize the app a docker file is also given on root of this repo.\
+This docker file is building image from jdk 21 official Java docker image and getting a pre build **.jar** from following path in repo.\
+```javaWebApp/target/javaWebApp-0.0.1-SNAPSHOT.jar```\
 
-To build docker image you can run following command.
-```docker build . -t <docker-registry>:<tag>```
+To build docker image you can run following command.\
+```docker build . -t <docker-registry>:<tag>```\
 
-A pre build image is also can be pulled from my public docker registry.
+A pre build image is also can be pulled from my public docker registry.\
 ```docker pull docker.io/jawad57903/demo-app:latest```
 
 ## Helm Chart
 
-The folder **javaWebApp-helm** contains all files related to helm chart by using which you can deploy this Java Web App on any K8S cluster.
-Just edit environment variables according to your needs in ```javaWebApp-helm/values.yaml```
-After that either you can deploy it directly using helm command or by using **run-helm.sh** bash script available in this repo.
+The folder **javaWebApp-helm** contains all files related to helm chart by using which you can deploy this Java Web App on any K8S cluster.\
+Just edit environment variables according to your needs in ```javaWebApp-helm/values.yaml```\
+After that either you can deploy it directly using helm command or by using **run-helm.sh** bash script available in this repo.\
 The final K8S deployment will consist of following objects.
 - Namespace
 - Deployment
@@ -56,7 +56,7 @@ The final K8S deployment will consist of following objects.
 
 ## Bash Script to Run Helm Chart
 
-This repo also contains a bash script **run-helm.sh** which can be used to install helm chart.
+This repo also contains a bash script **run-helm.sh** which can be used to install helm chart.\
 Following is the usage guide.
 ```sh
 To install Helm chart run the following command:
