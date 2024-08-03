@@ -4,9 +4,6 @@ serviceAccountName: default
 
 replicaCount: 1
 
-labels:
-  app: java-web-app
-
 image:
   repository: "docker.io/jawad57903/demo-app"
   tag: "latest"

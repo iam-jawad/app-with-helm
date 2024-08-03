@@ -3,15 +3,17 @@ kind: Deployment
 metadata:
   name: java-web-app-deployment
   namespace: {{ .Values.namespace }}
+  labels:
+    {{ include "webAppLabel" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- toYaml .Values.labels | nindent 6 }}
+      {{ include "webAppLabel" . | indent 6 }}
   template:
     metadata:
       labels:
-        {{- toYaml .Values.labels | nindent 8 }}
+        {{ include "webAppLabel" . | indent 8 }}
     spec:
       serviceAccountName: {{ .Values.serviceAccountName }}
       containers:

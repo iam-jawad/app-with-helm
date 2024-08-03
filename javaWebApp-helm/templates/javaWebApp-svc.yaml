@@ -6,7 +6,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   selector:
-    {{- toYaml .Values.labels | nindent 4 }}
+    {{ include "webAppLabel" . | indent 4 }}
   ports:
     - protocol: TCP
       port: {{ .Values.service.port }}
