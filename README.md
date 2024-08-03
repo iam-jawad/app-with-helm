@@ -35,10 +35,10 @@ If you see above message after deploying and hitting the app on root of domain s
 
 To containerize the app a docker file is also given on root of this repo.\
 This docker file is building image from jdk 21 official Java docker image and getting a pre build **.jar** from following path in repo.\
-```javaWebApp/target/javaWebApp-0.0.1-SNAPSHOT.jar```\
+```javaWebApp/target/javaWebApp-0.0.1-SNAPSHOT.jar```
 
 To build docker image you can run following command.\
-```docker build . -t <docker-registry>:<tag>```\
+```docker build . -t <docker-registry>:<tag>```
 
 A pre build image is also can be pulled from my public docker registry.\
 ```docker pull docker.io/jawad57903/demo-app:latest```
