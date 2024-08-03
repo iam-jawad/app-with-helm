@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: java-web-app
+  name: java-web-app-deployment
   namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: java-web-app
+      {{- toYaml .Values.labels | nindent 6 }}
   template:
     metadata:
       labels:
-        app: java-web-app
+        {{- toYaml .Values.labels | nindent 8 }}
     spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
       containers:
-      - name: java-web-app
+      - name: java-web-app-container
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:

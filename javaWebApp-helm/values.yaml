@@ -1,6 +1,11 @@
 namespace: "test-space"
 
+serviceAccountName: default
+
 replicaCount: 1
+
+labels:
+  app: java-web-app
 
 image:
   repository: "docker.io/jawad57903/demo-app"
@@ -22,6 +27,7 @@ readinessProbe:
   periodSeconds: 10
 
 service:
+  name: "java-web-app-service"
   type: ClusterIP
   port: 80
 
@@ -30,4 +36,3 @@ ingress:
   port: 80
   path: /
   pathType: Prefix
-  serviceName: "java-web-app-service"
