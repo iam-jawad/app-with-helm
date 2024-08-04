@@ -3,9 +3,11 @@ namespace: "test-space"
 serviceAccountName: default
 
 replica:
-  replicaCount: 1
-  minReplicas: 1
+  minReplicas: 2
   maxReplicas: 5
+
+pdb:
+  maxUnavailable: 1
 
 image:
   repository: "docker.io/jawad57903/demo-app"
