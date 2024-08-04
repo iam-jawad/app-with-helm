@@ -4,7 +4,11 @@ metadata:
   name: java-web-app-ingress
   namespace: {{ .Values.namespace }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    {{- if .Values.clusterEnvironmentEks }}
+    {{ include "ingress.annotations.eks" . | indent 4 }}
+    {{- else }}
+    {{ include "ingress.annotations.nginx" . | indent 4 }}
+    {{- end }}
 spec:
   rules:
   - host: {{ .Values.ingress.host }}
@@ -17,3 +21,4 @@ spec:
             name: {{ .Values.service.name }}
             port:
               number: {{ .Values.ingress.port }}
+    
