@@ -7,7 +7,7 @@ replica:
   maxReplicas: 5
 
 pdb:
-  maxUnavailable: 1
+  minAvailable: 2
 
 image:
   repository: "docker.io/jawad57903/demo-app"

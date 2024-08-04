@@ -5,7 +5,7 @@ metadata:
   name: java-web-app-pdb
   namespace: {{ .Values.namespace }}
 spec:
-  maxUnavailable: {{ .Values.pdb.maxUnavailable }}
+  minAvailable: {{ .Values.pdb.minAvailable }}
   selector:
     matchLabels:
-      {{ include "webAppLabel" . | indent 4 }}
+      {{ include "webAppLabel" . | indent 6 }}
