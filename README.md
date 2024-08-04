@@ -19,6 +19,7 @@ If you are trying to install helm chart in K8S cluster so please make sure follo
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 ```
 3) Whatever host name you will set in ingress, please make sure to add it in your ```/etc/hosts``` file so that you can access web app deployed on cluster easily. (This step is for local deployment only)
+4) Make sure you have deployed metrics server and it is working properly on your cluster (This step is for local deployment only. For EKS it will be done by Terraform)
 
 ## Java Web App
 
