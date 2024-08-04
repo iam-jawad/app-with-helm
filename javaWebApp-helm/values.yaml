@@ -2,7 +2,10 @@ namespace: "test-space"
 
 serviceAccountName: default
 
-replicaCount: 1
+replica:
+  replicaCount: 1
+  minReplicas: 1
+  maxReplicas: 5
 
 image:
   repository: "docker.io/jawad57903/demo-app"

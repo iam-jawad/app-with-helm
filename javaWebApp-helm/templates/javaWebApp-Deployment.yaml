@@ -6,7 +6,7 @@ metadata:
   labels:
     {{ include "webAppLabel" . | indent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replica.replicaCount }}
   selector:
     matchLabels:
       {{ include "webAppLabel" . | indent 6 }}
