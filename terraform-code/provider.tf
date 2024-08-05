@@ -1,6 +1,6 @@
 provider "aws" {
-  profile = "mj-custom"
-  region = "us-east-1"
+  profile = var.profile
+  region = var.region
 }
 
 terraform {

@@ -4,7 +4,7 @@ resource "helm_release" "lb-controller" {
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
   namespace  = "kube-system"
-  version    = "1.8.1"
+  version    = var.lb_controller_helm_version
 
   set {
     name  = "clusterName"
@@ -13,12 +13,12 @@ resource "helm_release" "lb-controller" {
 
   set {
     name  = "image.tag"
-    value = "v2.8.1"
+    value = var.lb_controller_img_tag
   }
 
   set {
     name  = "replicaCount"
-    value = 1
+    value = var.lb_controller_replicaCount
   }
 
   set {
@@ -34,7 +34,7 @@ resource "helm_release" "lb-controller" {
   # EKS Fargate specific
   set {
     name  = "region"
-    value = "us-east-1"
+    value = var.region
   }
 
   set {

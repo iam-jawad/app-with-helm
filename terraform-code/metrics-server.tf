@@ -16,7 +16,7 @@ resource "helm_release" "metrics-server" {
   repository = "https://kubernetes-sigs.github.io/metrics-server/"
   chart      = "metrics-server"
   namespace  = "kube-system"
-  version    = "3.8.2"
+  version    = var.metrics_server_helm_version
 
   set {
     name  = "metrics.enabled"

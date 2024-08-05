@@ -7,15 +7,15 @@ resource "aws_vpc" "demo-vpc" {
 
 #Public subnets
 
-resource "aws_subnet" "public-us-east-1a" {
+resource "aws_subnet" "public-az-1a" {
   vpc_id                  = aws_vpc.demo-vpc.id
-  cidr_block              = "10.0.64.0/19"
-  availability_zone       = "us-east-1a"
+  cidr_block              = var.public-az-1a-cidr
+  availability_zone       = var.public-az-1a
   #This indicates that instances launched into this subnet will automatically receive a public IP address.
   map_public_ip_on_launch = true
 
   tags = {
-    "Name"                                      = "public-us-east-1a"
+    "Name"                                      = "public-${var.public-az-1a}"
     #This tag is used by Kubernetes to identify the subnet for internal load balancers
     "kubernetes.io/role/elb"                    = "1"
     #This tag is used by Kubernetes to identify resources that belong to a specific cluster
@@ -23,15 +23,15 @@ resource "aws_subnet" "public-us-east-1a" {
   }
 }
 
-resource "aws_subnet" "public-us-east-1b" {
+resource "aws_subnet" "public-az-1b" {
   vpc_id                  = aws_vpc.demo-vpc.id
-  cidr_block              = "10.0.96.0/19"
-  availability_zone       = "us-east-1b"
+  cidr_block              = var.public-az-1b-cidr
+  availability_zone       = var.public-az-1b
   #This indicates that instances launched into this subnet will automatically receive a public IP address.
   map_public_ip_on_launch = true
 
   tags = {
-    "Name"                                      = "public-us-east-1b"
+    "Name"                                      = "public-${var.public-az-1b}"
     #This tag is used by Kubernetes to identify the subnet for internal load balancers
     "kubernetes.io/role/elb"                    = "1"
     #This tag is used by Kubernetes to identify resources that belong to a specific cluster
@@ -41,13 +41,13 @@ resource "aws_subnet" "public-us-east-1b" {
 
 #Private subnets
 
-resource "aws_subnet" "private-us-east-1a" {
+resource "aws_subnet" "private-az-1a" {
   vpc_id            = aws_vpc.demo-vpc.id
-  cidr_block        = "10.0.0.0/19"
-  availability_zone = "us-east-1a"
+  cidr_block        = var.private-az-1a-cidr
+  availability_zone = var.private-az-1a
 
   tags = {
-    "Name"                                      = "private-us-east-1a"
+    "Name"                                      = "private-${var.private-az-1a}"
     #This tag is used by Kubernetes to identify the subnet for internal load balancers
     "kubernetes.io/role/internal-elb"           = "1"
     #This tag is used by Kubernetes to identify resources that belong to a specific cluster
@@ -55,13 +55,13 @@ resource "aws_subnet" "private-us-east-1a" {
   }
 }
 
-resource "aws_subnet" "private-us-east-1b" {
+resource "aws_subnet" "private-az-1b" {
   vpc_id            = aws_vpc.demo-vpc.id
-  cidr_block        = "10.0.32.0/19"
-  availability_zone = "us-east-1b"
+  cidr_block        = var.private-az-1b-cidr
+  availability_zone = var.private-az-1b
 
   tags = {
-    "Name"                                      = "private-us-east-1b"
+    "Name"                                      = "private-${var.private-az-1b}"
     #This tag is used by Kubernetes to identify the subnet for internal load balancers
     "kubernetes.io/role/internal-elb"           = "1"
     #This tag is used by Kubernetes to identify resources that belong to a specific cluster

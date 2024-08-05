@@ -17,7 +17,7 @@ resource "aws_eip" "nat-eip" {
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat-eip.id
-  subnet_id     = aws_subnet.public-us-east-1a.id
+  subnet_id     = aws_subnet.public-az-1a.id
 
   tags = {
     Name = "natGateway"
@@ -61,21 +61,21 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table_association" "public-us-east-1a" {
-  subnet_id      = aws_subnet.public-us-east-1a.id
+  subnet_id      = aws_subnet.public-az-1a.id
   route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "public-us-east-1b" {
-  subnet_id      = aws_subnet.public-us-east-1b.id
+  subnet_id      = aws_subnet.public-az-1b.id
   route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private-us-east-1a" {
-  subnet_id      = aws_subnet.private-us-east-1a.id
+  subnet_id      = aws_subnet.private-az-1a.id
   route_table_id = aws_route_table.private.id
 }
 
 resource "aws_route_table_association" "private-us-east-1b" {
-  subnet_id      = aws_subnet.private-us-east-1b.id
+  subnet_id      = aws_subnet.private-az-1b.id
   route_table_id = aws_route_table.private.id
 }

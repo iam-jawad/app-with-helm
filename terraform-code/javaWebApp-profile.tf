@@ -3,11 +3,9 @@ resource "aws_eks_fargate_profile" "javaWebApp-profile" {
   fargate_profile_name   = "javaWebApp-profile"
   pod_execution_role_arn = aws_iam_role.kubesystem-profile-role.arn
 
-  # These subnets must have the following resource tag: 
-  # kubernetes.io/cluster/<CLUSTER_NAME>.
   subnet_ids = [
-    aws_subnet.private-us-east-1a.id,
-    aws_subnet.private-us-east-1b.id
+    aws_subnet.private-az-1a.id,
+    aws_subnet.private-az-1b.id
   ]
 
   selector {
