@@ -70,8 +70,8 @@ variable "cluster_name" {
 
 #EKS Cluster version
 variable "cluster_version" {
-  type = number
-  default = 1.29
+  type = string
+  default = "1.30"
 }
 
 #This name space should be same as in values.yaml of helm chart

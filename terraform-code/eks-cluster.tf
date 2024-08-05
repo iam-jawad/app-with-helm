@@ -5,7 +5,7 @@ resource "aws_eks_cluster" "cluster" {
 
   vpc_config {
 
-    endpoint_private_access = false
+    endpoint_private_access = true
     endpoint_public_access  = true
     public_access_cidrs     = ["0.0.0.0/0"]
 
@@ -19,5 +19,3 @@ resource "aws_eks_cluster" "cluster" {
 
   depends_on = [aws_iam_role_policy_attachment.amazon-eks-cluster-policy]
 }
-
-
