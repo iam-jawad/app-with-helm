@@ -10,6 +10,9 @@ metadata:
     {{ include "ingress.annotations.nginx" . | indent 4 }}
     {{- end }}
 spec:
+  {{- if .Values.clusterEnvironmentEks }}
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  {{- end }}
   rules:
   - host: {{ .Values.ingress.host }}
     http:

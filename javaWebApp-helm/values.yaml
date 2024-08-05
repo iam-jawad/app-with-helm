@@ -6,11 +6,11 @@ serviceAccountName: default
 clusterEnvironmentEks: true
 
 replica:
-  minReplicas: 2
+  minReplicas: 1
   maxReplicas: 5
 
 pdb:
-  minAvailable: 2
+  minAvailable: 1
 
 image:
   repository: "docker.io/jawad57903/demo-app"
@@ -37,7 +37,8 @@ service:
   port: 80
 
 ingress:
-  host: "java-web-app.local"
+  ingressClassName: alb
+  host: ""
   port: 80
   path: /
   pathType: Prefix

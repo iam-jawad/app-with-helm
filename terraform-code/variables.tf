@@ -1,6 +1,11 @@
+variable "vpc_name" {
+  type = string
+  default = "demo-vpc"
+}
+
 variable "cluster_name" {
   type = string
-  default = "demo"
+  default = "demo-cluster"
 }
 
 variable "cluster_version" {
