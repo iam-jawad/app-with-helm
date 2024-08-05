@@ -63,6 +63,8 @@ The final K8S deployment will consist of following objects.
 - Deployment
 - Service
 - Ingress
+- Horizontal Pod Autoscaler
+- Pod Disruption Budget
 
 ## Bash Script to Run Helm Chart
 
