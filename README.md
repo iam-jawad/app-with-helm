@@ -5,6 +5,7 @@ This repo contains following components.
 - **Dockerfile** to build docker image of **javaWebApp**.
 - Helm chart in folder **javaWebAppHelm** to run **javaWebApp** in K8S cluster.
 - A bash script **run-helm.sh** which can spin up **javaWebApp** from helm chat available in this repo.
+- Terraform code in folder **terraform-code** for more details about it please have a look on Terraform Code section down below.
 
 ## Pre-Requisite
 ### If building docker image
@@ -13,13 +14,14 @@ environment you are trying to build docker image.
 
 ### If installing helm chart on K8S cluster
 If you are trying to install helm chart in K8S cluster so please make sure following three things.
-1) Check if helm is installed on environemnt otherwise **run-helm.sh** will through an error that "Helm is not installed." and exit.
-2) You must have installed **Nginx ingress controller** on your K8S cluster. You can install it with following command.\
+1) Set values in **values.yaml** default values will also work but dubble check those values according to your environment configurations.
+2) Check if helm is installed on environemnt otherwise **run-helm.sh** will through an error that "Helm is not installed." and exit.
+3) You must have installed **Nginx ingress controller** on your K8S cluster. You can install it with following command.\
 ```sh
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 ```
-3) Whatever host name you will set in ingress, please make sure to add it in your ```/etc/hosts``` file so that you can access web app deployed on cluster easily. (This step is for local deployment only)
-4) Make sure you have deployed metrics server and it is working properly on your cluster (This step is for local deployment only. For EKS it will be done by Terraform)
+4) Whatever host name you will set in **values.yaml**, please make sure to do necessary DNS configuration for resolving host name to Cluster/LoadBalancer IP address. Default value for host is empty which acts as wildcard and user will be able to access app by directly hiting Cluster/LoadBlancer IP address.
+5) Make sure you have deployed metrics server and it is working properly on your cluster (This step is for local deployment only. For EKS it will be done by Terraform)
 
 ## Java Web App
 
@@ -72,3 +74,18 @@ To install Helm chart run the following command:
 To uninstall Helm chart run the following command:
 ./run-helm.sh -uninstall -revisionName <name>
 ```
+
+## Terraform Code
+Terraform code for provisioning infrastructure on AWS could be found in folder **terraform-code** on root of this repo.\
+To run this code you must have AWS CLI installed and configured along with terraform on environment from where you will be executing this code.\
+This code will provision following resources in your AWS account.
+1) VPC
+2) Four Subnets (two public and two private).
+3) A Nat Gateway (this will be attached in one of the public subnets to provide secure internet conectivity to pods deployed in private subnets).
+4) A Internet Gateway.
+5) Two Route Tables (one with rule to route traffic from private subnets to nat gateway and other with rule to route traffic between public subnets and internet gateway).
+6) EKS Cluster using Fargate (all required IAM policies and roles also will be created).
+7) A OIDC Provider for EKS cluster conectivity with other AWS resources.
+8) Two Fargate Profiles (one for kube-system namespace and other for custom namespace in which you can deploy application using helm code available in this repo. To improve security both profiles will be attached with private subnets so that pods can be deployed only in private subnets.).
+9) A Metrics Server so that HPA can be implemented on cluster.
+10) AWS LoadBalancer Controller for handling ingress resources (all required IAM policies, roles and service account also will be created).
