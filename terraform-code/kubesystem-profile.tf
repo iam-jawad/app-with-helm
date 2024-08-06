@@ -32,14 +32,3 @@ resource "aws_eks_fargate_profile" "kubesystem-profile" {
     namespace = "kube-system"
   }
 }
-
-#Restarting coredns deployment so that it can be scheduled on Fargate
-resource "null_resource" "rollout_restart_coredns" {
-  depends_on = [aws_eks_fargate_profile.kubesystem-profile]
-
-  provisioner "local-exec" {
-    command = <<EOT
-    kubectl -n kube-system rollout restart deployment coredns
-    EOT
-  }
-}

@@ -3,7 +3,7 @@ namespace: "test-space"
 serviceAccountName: default
 
 #set this false if this helm is not being deployed on EKS
-clusterEnvironmentEks: true
+clusterEnvironmentEks: false
 
 replica:
   minReplicas: 1

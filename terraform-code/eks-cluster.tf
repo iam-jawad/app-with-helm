@@ -19,3 +19,15 @@ resource "aws_eks_cluster" "cluster" {
 
   depends_on = [aws_iam_role_policy_attachment.amazon-eks-cluster-policy]
 }
+
+resource "aws_eks_addon" "coredns" {
+  cluster_name                = aws_eks_cluster.cluster.name
+  addon_name                  = "coredns"
+  resolve_conflicts_on_create = "OVERWRITE"
+
+  configuration_values = jsonencode({
+    computeType = "Fargate"
+  })
+
+  depends_on = [aws_eks_fargate_profile.kubesystem-profile]
+}
