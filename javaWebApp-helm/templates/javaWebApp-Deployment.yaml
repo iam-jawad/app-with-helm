@@ -28,8 +28,8 @@ spec:
           {{- toYaml .Values.readinessProbe | nindent 10 }}
         resources:
           requests:
-            cpu: 200m
-            memory: 200Mi
+            cpu: {{ .Values.resources.requests.cpu }}
+            memory: {{ .Values.resources.requests.memory }}
           limits:
-            cpu: 200m
-            memory: 200Mi
+            cpu: {{ .Values.resources.limits.cpu }}
+            memory: {{ .Values.resources.limits.memory }}
