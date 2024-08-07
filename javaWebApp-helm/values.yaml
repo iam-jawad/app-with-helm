@@ -21,15 +21,21 @@ livenessProbe:
   httpGet:
     path: /
     port: 8080
-  initialDelaySeconds: 30
-  periodSeconds: 10
+  initialDelaySeconds: 50
+  periodSeconds: 30
+  timeoutSeconds: 20
+  successThreshold: 1
+  failureThreshold: 3
 
 readinessProbe:
   httpGet:
     path: /
     port: 8080
-  initialDelaySeconds: 30
-  periodSeconds: 10
+  initialDelaySeconds: 50
+  periodSeconds: 30
+  timeoutSeconds: 20
+  successThreshold: 1
+  failureThreshold: 3
 
 service:
   name: "java-web-app-service"
