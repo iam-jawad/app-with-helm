@@ -22,7 +22,6 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       CLUSTER_NAME: ${{ inputs.CLUSTER_NAME }}
-      HELM_REVISION_NAME: ${{ inputs.HELM_REVISION_NAME }}
     secrets: inherit
 
   helm-uninstall:
