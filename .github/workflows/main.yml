@@ -27,6 +27,7 @@ jobs:
     uses: ./.github/workflows/docker-build-and-push.yml
     with:
       ECR_REPO: ${{ vars.ECR_REPO }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
     secrets: inherit
 
   call-test:
@@ -36,6 +37,9 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
+      AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}
     secrets: inherit
   
   call-deploy:
@@ -47,6 +51,9 @@ jobs:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
       HELM_REVISION_NAME: ${{ vars.HELM_REVISION_NAME }}
       ECR_REPO: ${{ vars.ECR_REPO }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
+      AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}
     secrets: inherit
   
   call-destroy:
@@ -56,4 +63,7 @@ jobs:
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
       HELM_REVISION_NAME: ${{ vars.HELM_REVISION_NAME }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
+      AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}
     secrets: inherit

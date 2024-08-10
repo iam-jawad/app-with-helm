@@ -5,6 +5,15 @@ on:
       CLUSTER_NAME:
         required: true
         type: string
+      AWS_REGION:
+        required: true
+        type: string
+      AWS_BUCKET_NAME:
+        required: true
+        type: string
+      AWS_BUCKET_KEY_NAME:
+        required: true
+        type: string
 
 permissions:
   id-token: write 
@@ -29,14 +38,14 @@ jobs:
         uses: ./.github/composite-actions/aws-auth
         with:
           AWS_ROLE: ${{ secrets.AWS_ROLE }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
 
       - name: Terraform setup
         uses: ./.github/composite-actions/terraform-setup
         with:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
+          AWS_BUCKET_NAME: ${{ inputs.AWS_BUCKET_NAME }}
+          AWS_BUCKET_KEY_NAME: ${{ inputs.AWS_BUCKET_KEY_NAME }}
 
       - name: Test Terraform Syntax
         id: validate

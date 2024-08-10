@@ -11,6 +11,15 @@ on:
       ECR_REPO:
         required: true
         type: string
+      AWS_REGION:
+        required: true
+        type: string
+      AWS_BUCKET_NAME:
+        required: true
+        type: string
+      AWS_BUCKET_KEY_NAME:
+        required: true
+        type: string
 
 permissions:
   id-token: write 
@@ -35,18 +44,18 @@ jobs:
         uses: ./.github/composite-actions/aws-auth
         with:
           AWS_ROLE: ${{ secrets.AWS_ROLE }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
 
       - name: Terraform setup
         uses: ./.github/composite-actions/terraform-setup
         with:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
+          AWS_BUCKET_NAME: ${{ inputs.AWS_BUCKET_NAME }}
+          AWS_BUCKET_KEY_NAME: ${{ inputs.AWS_BUCKET_KEY_NAME }}
       
       - name: Terraform Apply
         working-directory: ./terraform-code
-        run: terraform apply -var="region=${{ secrets.AWS_REGION }}" -var="cluster_name=${{ inputs.CLUSTER_NAME }}" -auto-approve -input=false
+        run: terraform apply -var="region=${{ inputs.AWS_REGION }}" -var="cluster_name=${{ inputs.CLUSTER_NAME }}" -auto-approve -input=false
 
   helm-install:
     name: Install Helm
@@ -70,13 +79,13 @@ jobs:
         uses: ./.github/composite-actions/aws-auth
         with:
           AWS_ROLE: ${{ secrets.AWS_ROLE }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
 
       - name: Helm and kubectl setup
         uses: ./.github/composite-actions/helm-setup
         with:
           CLUSTER_NAME: ${{ inputs.CLUSTER_NAME }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
 
       - name: Test Helm
         run: |

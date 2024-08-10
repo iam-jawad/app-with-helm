@@ -8,6 +8,15 @@ on:
       HELM_REVISION_NAME:
         required: true
         type: string
+      AWS_REGION:
+        required: true
+        type: string
+      AWS_BUCKET_NAME:
+        required: true
+        type: string
+      AWS_BUCKET_KEY_NAME:
+        required: true
+        type: string
 
 permissions:
   id-token: write 
@@ -21,7 +30,10 @@ jobs:
     name: Test
     uses: ./.github/workflows/test.yml
     with:
-      CLUSTER_NAME: ${{ inputs.CLUSTER_NAME }}
+      CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
+      AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}
     secrets: inherit
 
   helm-uninstall:
@@ -46,13 +58,13 @@ jobs:
         uses: ./.github/composite-actions/aws-auth
         with:
           AWS_ROLE: ${{ secrets.AWS_ROLE }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
 
       - name: Helm and kubectl setup
         uses: ./.github/composite-actions/helm-setup
         with:
           CLUSTER_NAME: ${{ inputs.CLUSTER_NAME }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
 
       - name: Uninstalling Application using Helm
         run: |
@@ -74,14 +86,14 @@ jobs:
         uses: ./.github/composite-actions/aws-auth
         with:
           AWS_ROLE: ${{ secrets.AWS_ROLE }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
 
       - name: Terraform setup
         uses: ./.github/composite-actions/terraform-setup
         with:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
+          AWS_BUCKET_NAME: ${{ inputs.AWS_BUCKET_NAME }}
+          AWS_BUCKET_KEY_NAME: ${{ inputs.AWS_BUCKET_KEY_NAME }}
 
       - name: Terraform Destroy
         working-directory: ./terraform-code
