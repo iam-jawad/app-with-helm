@@ -34,7 +34,7 @@ install_helm_chart() {
     fi
 
     echo "Installing Helm chart from: $chart_path with revision name: $revision_name"
-    helm install "$revision_name" "$chart_path"
+    helm upgrade --install "$revision_name" "$chart_path"
 }
 
 # Function to uninstall a Helm chart

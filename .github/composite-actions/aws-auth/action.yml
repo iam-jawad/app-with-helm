@@ -1,0 +1,20 @@
+name: 'Checkou and Auth'
+description: 'Composite action for performing checkout and aws auth.'
+
+inputs:
+  AWS_ROLE:
+    description: 'Role for aws authentication'
+    required: true
+  AWS_REGION:
+    description: 'AWS region'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Configure AWS credentials from AWS account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ inputs.AWS_ROLE }}
+        aws-region: ${{ inputs.AWS_REGION }}
+        role-session-name: GitHub-OIDC

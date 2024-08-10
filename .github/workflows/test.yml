@@ -1,0 +1,62 @@
+name: 'Test'
+on:
+  workflow_call:
+    inputs:
+      CLUSTER_NAME:
+        required: true
+        type: string
+      REVISION_NAME:
+        required: true
+        type: string
+    secrets:
+      AWS_ROLE:
+        required: true
+      AWS_REGION:
+        required: true
+      AWS_BUCKET_NAME:
+        required: true
+      AWS_BUCKET_KEY_NAME:
+        required: true
+
+permissions:
+  id-token: write 
+  contents: read 
+      
+env:
+  TF_LOG: INFO
+
+jobs:
+  terraform-test:
+    name: Tetsing Terraform code
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run aws auth
+        uses: ./.github/composite-actions/aws-auth
+        with:
+          AWS_ROLE: ${{ secrets.AWS_ROLE }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      - name: Terraform setup
+        uses: ./.github/composite-actions/terraform-setup
+        with:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+
+      - name: Test Terraform Syntax
+        id: validate
+        working-directory: ./terraform-code
+        run: terraform fmt && terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        working-directory: ./terraform-code
+        run: terraform plan -no-color

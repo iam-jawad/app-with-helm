@@ -42,5 +42,5 @@ resource "helm_release" "lb-controller" {
     value = aws_vpc.demo-vpc.id
   }
 
-  depends_on = [aws_eks_fargate_profile.kubesystem-profile]
+  depends_on = [aws_eks_addon.coredns]
 }

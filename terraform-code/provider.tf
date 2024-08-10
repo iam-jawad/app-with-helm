@@ -1,8 +1,3 @@
-provider "aws" {
-  profile = var.profile
-  region = var.region
-}
-
 terraform {
   required_providers {
     aws = {
@@ -10,4 +5,6 @@ terraform {
       version = "~> 5.50"
     }
   }
+
+  backend "s3" {}
 }

@@ -23,5 +23,5 @@ resource "helm_release" "metrics-server" {
     value = false
   }
 
-  depends_on = [aws_eks_fargate_profile.kubesystem-profile]
+  depends_on = [aws_eks_addon.coredns]
 }

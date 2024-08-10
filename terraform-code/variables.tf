@@ -1,9 +1,3 @@
-#AWS config profile name for terraform conectivity with AWS
-variable "profile" {
-  type = string
-  default = "mj-custom"
-}
-
 #Region in which infrastructure will be provisioned
 variable "region" {
   type = string

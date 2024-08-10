@@ -1,0 +1,60 @@
+name: "Build and Push"
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose action: apply or destroy'
+        required: true
+        default: 'apply'
+permissions:
+  id-token: write 
+  contents: read 
+
+jobs:
+
+  call-build-app:
+    name: Build
+    if: github.event.inputs.action != 'destroy'
+    uses: ./.github/workflows/build-app.yml
+
+  call-docker-build-and-push:
+    name: Docker
+    if: github.event.inputs.action != 'destroy'
+    needs: call-build-app
+    uses: ./.github/workflows/docker-build-and-push.yml
+    with:
+      DOCKER_REPO: ${{ vars.DOCKER_REPO }}
+    secrets: inherit
+
+  call-test:
+    name: Test
+    if: github.event.inputs.action != 'destroy'
+    needs: call-docker-build-and-push
+    uses: ./.github/workflows/test.yml
+    with:
+      CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+      REVISION_NAME: ${{ vars.REVISION_NAME }}
+    secrets: inherit
+  
+  call-deploy:
+    name: Deploy
+    needs: call-test
+    if: github.event.inputs.action != 'destroy'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+      REVISION_NAME: ${{ vars.REVISION_NAME }}
+      DOCKER_REPO: ${{ vars.DOCKER_REPO }}
+    secrets: inherit
+  
+  call-destroy:
+    name: Destroy
+    if: github.event.inputs.action == 'destroy'
+    uses: ./.github/workflows/destroy.yml
+    with:
+      CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+      REVISION_NAME: ${{ vars.REVISION_NAME }}
+    secrets: inherit
