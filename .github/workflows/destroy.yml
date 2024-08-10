@@ -23,11 +23,7 @@ jobs:
     with:
       CLUSTER_NAME: ${{ inputs.CLUSTER_NAME }}
       HELM_REVISION_NAME: ${{ inputs.HELM_REVISION_NAME }}
-    secrets:
-      AWS_ROLE: ${{ secrets.AWS_ROLE }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-      AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+    secrets: inherit
 
   helm-uninstall:
     name: Uninstall Helm
