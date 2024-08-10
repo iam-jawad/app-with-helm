@@ -26,7 +26,7 @@ jobs:
     needs: call-build-app
     uses: ./.github/workflows/docker-build-and-push.yml
     with:
-      DOCKER_REPO: ${{ vars.DOCKER_REPO }}
+      ECR_REPO: ${{ vars.ECR_REPO }}
     secrets: inherit
 
   call-test:
@@ -36,7 +36,6 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
-      REVISION_NAME: ${{ vars.REVISION_NAME }}
     secrets: inherit
   
   call-deploy:
@@ -46,8 +45,8 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
-      REVISION_NAME: ${{ vars.REVISION_NAME }}
-      DOCKER_REPO: ${{ vars.DOCKER_REPO }}
+      HELM_REVISION_NAME: ${{ vars.HELM_REVISION_NAME }}
+      ECR_REPO: ${{ vars.ECR_REPO }}
     secrets: inherit
   
   call-destroy:
@@ -56,5 +55,5 @@ jobs:
     uses: ./.github/workflows/destroy.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
-      REVISION_NAME: ${{ vars.REVISION_NAME }}
+      HELM_REVISION_NAME: ${{ vars.HELM_REVISION_NAME }}
     secrets: inherit

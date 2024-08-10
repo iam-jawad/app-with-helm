@@ -15,7 +15,7 @@ pdb:
 image:
   repository: "docker.io/jawad57903/demo-app"
   tag: "latest"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 livenessProbe:
   httpGet:

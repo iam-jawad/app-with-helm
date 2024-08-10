@@ -5,18 +5,9 @@ on:
       CLUSTER_NAME:
         required: true
         type: string
-      REVISION_NAME:
+      HELM_REVISION_NAME:
         required: true
         type: string
-    secrets:
-      AWS_ROLE:
-        required: true
-      AWS_REGION:
-        required: true
-      AWS_BUCKET_NAME:
-        required: true
-      AWS_BUCKET_KEY_NAME:
-        required: true
 
 permissions:
   id-token: write 
@@ -31,7 +22,7 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       CLUSTER_NAME: ${{ inputs.CLUSTER_NAME }}
-      REVISION_NAME: ${{ inputs.REVISION_NAME }}
+      HELM_REVISION_NAME: ${{ inputs.HELM_REVISION_NAME }}
     secrets:
       AWS_ROLE: ${{ secrets.AWS_ROLE }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -70,7 +61,7 @@ jobs:
 
       - name: Uninstalling Application using Helm
         run: |
-          helm uninstall ${{ inputs.REVISION_NAME }}
+          helm uninstall ${{ inputs.HELM_REVISION_NAME }}
 
   terraform-destroy:
     name: Destroying Terraform

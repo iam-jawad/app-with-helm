@@ -5,25 +5,12 @@ on:
       CLUSTER_NAME:
         required: true
         type: string
-      REVISION_NAME:
+      HELM_REVISION_NAME:
         required: true
         type: string
-      DOCKER_REPO:
+      ECR_REPO:
         required: true
         type: string
-    secrets:
-      AWS_ROLE:
-        required: true
-      AWS_REGION:
-        required: true
-      AWS_BUCKET_NAME:
-        required: true
-      AWS_BUCKET_KEY_NAME:
-        required: true
-      DOCKER_USERNAME:
-        required: true
-      DOCKER_TOKEN:
-        required: true
 
 permissions:
   id-token: write 
@@ -93,9 +80,8 @@ jobs:
 
       - name: Test Helm
         run: |
-          helm upgrade --install ${{ inputs.REVISION_NAME }} javaWebApp-helm --debug --dry-run
+          helm upgrade --install ${{ inputs.HELM_REVISION_NAME }} javaWebApp-helm --debug --dry-run
 
       - name: Deploy Application using Helm
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
-          helm upgrade --install ${{ inputs.REVISION_NAME }} javaWebApp-helm --set image.repository="${{ secrets.DOCKER_USERNAME }}/${{ inputs.DOCKER_REPO }}" --set image.tag=latest
+          helm upgrade --install ${{ inputs.HELM_REVISION_NAME }} javaWebApp-helm --set image.repository="${{ secrets.ECR_URI }}/${{ inputs.ECR_REPO }}" --set image.tag=latest

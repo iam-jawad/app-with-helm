@@ -20,6 +20,15 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+      
+      - name: Run aws auth
+        uses: ./.github/composite-actions/aws-auth
+        with:
+          AWS_ROLE: ${{ secrets.AWS_ROLE }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Create folder
         run: mkdir jar-file
