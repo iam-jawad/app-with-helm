@@ -95,6 +95,13 @@ jobs:
           AWS_BUCKET_NAME: ${{ inputs.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ inputs.AWS_BUCKET_KEY_NAME }}
 
+      - name: Get tfvars file from secret
+        env: 
+          vars_file: ${{ secrets.TF_VARS }}
+        if: ${{ env.vars_file != '' }}
+        working-directory: ./terraform-code
+        run: echo "${{ secrets.TF_VARS }}" > terraform.tfvars
+
       - name: Terraform Destroy
         working-directory: ./terraform-code
         run: terraform destroy -auto-approve -input=false
