@@ -47,13 +47,17 @@ jobs:
           AWS_BUCKET_NAME: ${{ inputs.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ inputs.AWS_BUCKET_KEY_NAME }}
 
+      - name: Decode and create .tfvars file
+        if: secrets.TF_VARS != ''
+        working-directory: ./terraform-code
+        run: echo "${{ secrets.TF_VARS }}" > terraform.tfvars && cat terraform.tfvars
+
+
       - name: Test Terraform Syntax
-        id: validate
         working-directory: ./terraform-code
         run: terraform fmt && terraform validate -no-color
 
       - name: Terraform Plan
-        id: plan
         if: github.event_name == 'pull_request'
         working-directory: ./terraform-code
         run: terraform plan -no-color
