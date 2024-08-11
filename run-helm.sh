@@ -53,7 +53,7 @@ uninstall_helm_chart() {
 # Show usage instructions
 show_help() {
     echo "Usage:"
-    echo "To install Helm chart run the following command:"
+    echo "To install or upgrade Helm chart run the following command:"
     echo "./run-helm.sh -install -revisionName <name> -path <path-to-helm-chart>"
     echo "To uninstall Helm chart run the following command:"
     echo "./run-helm.sh -uninstall -revisionName <name>"
