@@ -48,7 +48,9 @@ jobs:
           AWS_BUCKET_KEY_NAME: ${{ inputs.AWS_BUCKET_KEY_NAME }}
 
       - name: Decode and create .tfvars file
-        if: ${{ secrets.TF_VARS }} != ''
+        env: 
+          vars_file: ${{ secrets.TF_VARS }}
+        if: ${{ env.vars_file != '' }}
         working-directory: ./terraform-code
         run: echo "${{ secrets.TF_VARS }}" > terraform.tfvars && cat terraform.tfvars
 
