@@ -15,25 +15,9 @@ permissions:
 
 jobs:
 
-  call-build-app:
-    name: Build
-    if: github.event.inputs.action != 'destroy'
-    uses: ./.github/workflows/build-app.yml
-
-  call-docker-build-and-push:
-    name: Docker
-    if: github.event.inputs.action != 'destroy'
-    needs: call-build-app
-    uses: ./.github/workflows/docker-build-and-push.yml
-    with:
-      ECR_REPO: ${{ vars.ECR_REPO }}
-      AWS_REGION: ${{ vars.AWS_REGION }}
-    secrets: inherit
-
   call-test:
     name: Test
     if: github.event.inputs.action != 'destroy'
-    needs: call-docker-build-and-push
     uses: ./.github/workflows/test.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
@@ -49,8 +33,6 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
-      HELM_REVISION_NAME: ${{ vars.HELM_REVISION_NAME }}
-      ECR_REPO: ${{ vars.ECR_REPO }}
       AWS_REGION: ${{ vars.AWS_REGION }}
       AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
       AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}
@@ -62,7 +44,6 @@ jobs:
     uses: ./.github/workflows/destroy.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
-      HELM_REVISION_NAME: ${{ vars.HELM_REVISION_NAME }}
       AWS_REGION: ${{ vars.AWS_REGION }}
       AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
       AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}

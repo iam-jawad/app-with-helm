@@ -5,12 +5,6 @@ on:
       CLUSTER_NAME:
         required: true
         type: string
-      HELM_REVISION_NAME:
-        required: true
-        type: string
-      ECR_REPO:
-        required: true
-        type: string
       AWS_REGION:
         required: true
         type: string
@@ -63,41 +57,3 @@ jobs:
       - name: Terraform Apply
         working-directory: ./terraform-code
         run: terraform apply -var="region=${{ inputs.AWS_REGION }}" -var="cluster_name=${{ inputs.CLUSTER_NAME }}" -auto-approve -input=false
-
-  helm-install:
-    name: Install Helm
-    runs-on: ubuntu-latest
-    needs: terraform-apply
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: .
-
-    permissions:
-      id-token: write
-      contents: read
-
-    steps:
-      - name: Git checkout
-        uses: actions/checkout@v3
-
-      - name: Run aws auth
-        uses: ./.github/composite-actions/aws-auth
-        with:
-          AWS_ROLE: ${{ secrets.AWS_ROLE }}
-          AWS_REGION: ${{ inputs.AWS_REGION }}
-
-      - name: Helm and kubectl setup
-        uses: ./.github/composite-actions/helm-setup
-        with:
-          CLUSTER_NAME: ${{ inputs.CLUSTER_NAME }}
-          AWS_REGION: ${{ inputs.AWS_REGION }}
-
-      - name: Test Helm
-        run: |
-          helm upgrade --install ${{ inputs.HELM_REVISION_NAME }} javaWebApp-helm --debug --dry-run
-
-      - name: Deploy Application using Helm
-        run: |
-          helm upgrade --install ${{ inputs.HELM_REVISION_NAME }} javaWebApp-helm --set image.repository="${{ secrets.ECR_URI }}/${{ inputs.ECR_REPO }}" --set image.tag=latest
