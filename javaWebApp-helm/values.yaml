@@ -1,0 +1,58 @@
+namespace: "test-space"
+
+serviceAccountName: default
+
+#set this false if this helm is not being deployed on EKS
+clusterEnvironmentEks: true 
+
+replica:
+  minReplicas: 1
+  maxReplicas: 5
+
+pdb:
+  minAvailable: 1
+
+image:
+  repository: "docker.io/jawad57903/demo-app"
+  tag: "latest"
+  pullPolicy: Always
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8080
+  initialDelaySeconds: 50
+  periodSeconds: 30
+  timeoutSeconds: 20
+  successThreshold: 1
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8080
+  initialDelaySeconds: 50
+  periodSeconds: 30
+  timeoutSeconds: 20
+  successThreshold: 1
+  failureThreshold: 3
+
+service:
+  name: "java-web-app-service"
+  type: ClusterIP
+  port: 80
+
+ingress:
+  ingressClassName: alb
+  host: ""
+  port: 80
+  path: /
+  pathType: Prefix
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 200Mi
+  limits:
+    cpu: 200m
+    memory: 200Mi

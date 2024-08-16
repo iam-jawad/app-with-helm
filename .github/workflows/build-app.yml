@@ -1,0 +1,38 @@
+name: 'Build App'
+on:
+  workflow_call:
+
+permissions:
+  contents: read 
+
+jobs:
+  build-and-push:
+    name: Build App
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots verify
+        working-directory: ./javaWebApp
+
+      - name: Getting JAR file
+        run: mkdir jar-file && cp ./javaWebApp/target/*.jar jar-file
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Package
+          path: jar-file

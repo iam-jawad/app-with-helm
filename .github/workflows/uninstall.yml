@@ -1,0 +1,51 @@
+name: 'Uninstall'
+on:
+  workflow_call:
+    inputs:
+      CLUSTER_NAME:
+        required: true
+        type: string
+      HELM_REVISION_NAME:
+        required: true
+        type: string
+      AWS_REGION:
+        required: true
+        type: string
+
+permissions:
+  id-token: write 
+  contents: read 
+
+jobs:
+  helm-uninstall:
+    name: Uninstall Helm
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Run aws auth
+        uses: ./.github/composite-actions/aws-auth
+        with:
+          AWS_ROLE: ${{ secrets.AWS_ROLE }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
+
+      - name: Helm and kubectl setup
+        uses: ./.github/composite-actions/helm-setup
+        with:
+          CLUSTER_NAME: ${{ inputs.CLUSTER_NAME }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
+
+      - name: Uninstalling Application using Helm
+        run: |
+          helm uninstall ${{ inputs.HELM_REVISION_NAME }}

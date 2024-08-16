@@ -1,0 +1,50 @@
+name: 'Build and Push'
+on:
+  workflow_call:
+    inputs:
+      ECR_REPO:
+        required: true
+        type: string
+      AWS_REGION:
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read 
+
+jobs:
+  build-and-push:
+    name: Build and Push
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Run aws auth
+        uses: ./.github/composite-actions/aws-auth
+        with:
+          AWS_ROLE: ${{ secrets.AWS_ROLE }}
+          AWS_REGION: ${{ inputs.AWS_REGION }}
+      
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Create folder
+        run: mkdir jar-file
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Package
+          path: jar-file
+
+      - name: Build and Push Docker Image
+        working-directory: ./jar-file
+        run: |
+          docker build . -f ../Dockerfile -t ${{ secrets.ECR_URI }}/${{ inputs.ECR_REPO }}:latest --build-arg JAR_PATH=$(ls *.jar) --no-cache
+          docker push ${{ secrets.ECR_URI }}/${{ inputs.ECR_REPO }}:latest

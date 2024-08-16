@@ -6,45 +6,48 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'Choose action: apply or destroy'
+        description: 'Choose action: install or uninstall'
         required: true
-        default: 'apply'
+        default: 'install'
 permissions:
   id-token: write 
   contents: read 
 
 jobs:
 
-  call-test:
-    name: Test
-    if: github.event.inputs.action != 'destroy'
-    uses: ./.github/workflows/test.yml
+  call-build-app:
+    name: Build
+    if: github.event.inputs.action != 'uninstall'
+    uses: ./.github/workflows/build-app.yml
+
+  call-docker-build-and-push:
+    name: Docker
+    if: github.event.inputs.action != 'uninstall'
+    needs: call-build-app
+    uses: ./.github/workflows/docker-build-and-push.yml
     with:
-      CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+      ECR_REPO: ${{ vars.ECR_REPO }}
       AWS_REGION: ${{ vars.AWS_REGION }}
-      AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
-      AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}
     secrets: inherit
   
-  call-deploy:
-    name: Deploy
-    needs: call-test
-    if: github.event.inputs.action != 'destroy'
-    uses: ./.github/workflows/deploy.yml
+  call-install:
+    name: Install
+    needs: call-docker-build-and-push
+    if: github.event.inputs.action != 'uninstall'
+    uses: ./.github/workflows/install.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+      HELM_REVISION_NAME: ${{ vars.HELM_REVISION_NAME }}
+      ECR_REPO: ${{ vars.ECR_REPO }}
       AWS_REGION: ${{ vars.AWS_REGION }}
-      AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
-      AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}
     secrets: inherit
   
-  call-destroy:
-    name: Destroy
-    if: github.event.inputs.action == 'destroy'
-    uses: ./.github/workflows/destroy.yml
+  call-uninstall:
+    name: uninstall
+    if: github.event.inputs.action == 'uninstall'
+    uses: ./.github/workflows/uninstall.yml
     with:
       CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+      HELM_REVISION_NAME: ${{ vars.HELM_REVISION_NAME }}
       AWS_REGION: ${{ vars.AWS_REGION }}
-      AWS_BUCKET_NAME: ${{ vars.AWS_BUCKET_NAME }}
-      AWS_BUCKET_KEY_NAME: ${{ vars.AWS_BUCKET_KEY_NAME }}
     secrets: inherit

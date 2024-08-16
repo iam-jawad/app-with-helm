@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: java-web-app-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    {{- if .Values.clusterEnvironmentEks }}
+    {{ include "ingress.annotations.eks" . | indent 4 }}
+    {{- else }}
+    {{ include "ingress.annotations.nginx" . | indent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.clusterEnvironmentEks }}
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  {{- end }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: {{ .Values.ingress.path }}
+        pathType: {{ .Values.ingress.pathType }}
+        backend:
+          service:
+            name: {{ .Values.service.name }}
+            port:
+              number: {{ .Values.ingress.port }}
+    
