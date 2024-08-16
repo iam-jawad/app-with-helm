@@ -1,11 +1,10 @@
-# DevOpsAssessment
+# Helm Chart
 ## Intrduction
 This repo contains following components.
 - A java web application source code in folder **javaWebApp**.
 - **Dockerfile** to build docker image of **javaWebApp**.
 - Helm chart in folder **javaWebAppHelm** to run **javaWebApp** in K8S cluster.
 - A bash script **run-helm.sh** which can spin up **javaWebApp** from helm chat available in this repo.
-- Terraform code in folder **terraform-code** for more details about it please have a look on **Terraform Code section** down below.
 - GitHub Actions in **.github** folder. This folder contains it's own readme file. Please have a look on it to properly setup github actions automation on this repo.
 
 ## Pre-Requisite
@@ -23,11 +22,6 @@ If you are trying to install helm chart in K8S cluster so please make sure follo
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 ```
 4) Make sure you have deployed metrics server and it is working properly on your cluster (This step is for local deployment only. For EKS it will be done by Terraform)
-
-### If executing Terraform code
-Before executing Terraform code please make sure following things.
-1) To run this code you must have AWS CLI installed and configured along with terraform on environment from where you will be executing this code. 
-2) Craete an S3 bucket to serve as a backend for storing terraform state file.
 
 ## Java Web App
 
@@ -91,28 +85,3 @@ To install or upgrade Helm chart run the following command:
 To uninstall Helm chart run the following command:
 ./run-helm.sh -uninstall -revisionName <name>
 ```
-
-## Terraform Code
-Terraform code for provisioning infrastructure on AWS is in folder **terraform-code** on root of this repo.\
-Default values for all variables are already set in variables.tf file. If you want to override any default value, so feel free to pass it through terraform apply command or create terraform.tfvars file with specific variables.\
-First you will need to initiate terraform in folder **terraform-code** by providing details of your S3 bucket.
-```sh
-terraform init -backend-config="bucket=<S3 bucket name>" -backend-config="key=<S3 bucket key name>" -backend-config="region=< AWS Region>"
-```
-Then you can run following commands to plan and execute terraform code.
-```sh
-terraform plan
-terraform apply
-```
-
-This code will provision following resources in your AWS account.
-1) VPC
-2) Four Subnets (two public and two private).
-3) A Nat Gateway (this will be attached in one of the public subnets to provide secure internet conectivity to pods deployed in private subnets).
-4) A Internet Gateway.
-5) Two Route Tables (one with rule to route traffic from private subnets to nat gateway and other with rule to route traffic between public subnets and internet gateway).
-6) EKS Cluster using Fargate (all required IAM policies and roles also will be created).
-7) A OIDC Provider for EKS cluster conectivity with other AWS resources.
-8) Two Fargate Profiles (one for kube-system namespace and other for custom namespace in which you can deploy application using helm code available in this repo. To improve security both profiles will be attached with private subnets so that pods can be deployed only in private subnets.).
-9) A Metrics Server so that HPA can be implemented on cluster.
-10) AWS LoadBalancer Controller for handling ingress resources (all required IAM policies, roles and service account also will be created).
