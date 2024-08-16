@@ -1,5 +1,5 @@
 # Helm Chart
-## Intrduction
+## Introduction
 This repo contains following components.
 - A java web application source code in folder **javaWebApp**.
 - **Dockerfile** to build docker image of **javaWebApp**.
