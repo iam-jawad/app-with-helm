@@ -1,4 +1,4 @@
-name: "Build and Push"
+name: "Main"
 on:
   push:
     branches:
@@ -14,7 +14,6 @@ permissions:
   contents: read 
 
 jobs:
-
   call-build-app:
     name: Build
     if: github.event.inputs.action != 'uninstall'

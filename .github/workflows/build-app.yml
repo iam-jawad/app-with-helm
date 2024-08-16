@@ -6,7 +6,7 @@ permissions:
   contents: read 
 
 jobs:
-  build-and-push:
+  build-app:
     name: Build App
     runs-on: ubuntu-latest
     defaults:
