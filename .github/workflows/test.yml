@@ -51,15 +51,11 @@ jobs:
         env: 
           vars_file: ${{ secrets.TF_VARS }}
         if: ${{ env.vars_file != '' }}
-        working-directory: ./terraform-code
         run: echo "${{ secrets.TF_VARS }}" > terraform.tfvars
 
 
       - name: Test Terraform Syntax
-        working-directory: ./terraform-code
         run: terraform fmt && terraform validate -no-color
 
       - name: Terraform Plan
-        if: github.event_name == 'pull_request'
-        working-directory: ./terraform-code
         run: terraform plan -no-color

@@ -21,5 +21,4 @@ runs:
     - name: Terraform initialization
       id: init
       shell: bash
-      working-directory: ./terraform-code
       run: terraform init -backend-config="bucket=${{ inputs.AWS_BUCKET_NAME }}" -backend-config="key=${{ inputs.AWS_BUCKET_KEY_NAME }}" -backend-config="region=${{ inputs.AWS_REGION }}" -input=false

@@ -51,9 +51,7 @@ jobs:
         env: 
           vars_file: ${{ secrets.TF_VARS }}
         if: ${{ env.vars_file != '' }}
-        working-directory: ./terraform-code
         run: echo "${{ secrets.TF_VARS }}" > terraform.tfvars
       
       - name: Terraform Apply
-        working-directory: ./terraform-code
         run: terraform apply -var="region=${{ inputs.AWS_REGION }}" -var="cluster_name=${{ inputs.CLUSTER_NAME }}" -auto-approve -input=false
