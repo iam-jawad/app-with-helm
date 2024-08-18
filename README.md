@@ -5,7 +5,7 @@ This repo contains following components.
 - **Dockerfile** to build docker image of **javaWebApp**.
 - Helm chart in folder **javaWebAppHelm** to run **javaWebApp** in K8S cluster.
 - A bash script **run-helm.sh** which can spin up **javaWebApp** from helm chart available in this repo.
-- GitHub Actions in **.github** folder. This folder contains it's own readme file. Please have a look on [it](https://github.com/iam-jawad/app-with-helm/blob/main/.github/github-actions.md) to properly setup github actions automation on this repo.
+- GitHub Actions in **.github** folder. This folder contains it's own readme file. Please have a look [on it](https://github.com/iam-jawad/app-with-helm/blob/main/.github/github-actions.md) to properly setup github actions automation on this repo.
 
 ## Pre-Requisite
 ### If building docker image manually
