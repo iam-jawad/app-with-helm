@@ -2,7 +2,7 @@
 ## Intrduction
 This folder contains GitHub Actions to automate following things.
 1. Install helm chart on EKS cluster provisioned by Terraform to host java web application.
-2. A manual trigger to uninstall helm chart and destroy whole provisioned infrastructure.
+2. A manual trigger to uninstall helm chart.
 
 There are two workflows, First one is installing helm chart. Which will be triggered automatically on push event to main branch. In which it will,
 - **Build java web app**
@@ -31,7 +31,7 @@ You will have to setup follwoing things to run this workflows.
         }
     }
     ```
-    If you haven't provisioned infrastructure on AWS using my github actions guide so, go ahead and follow step 2 and 3 as well.
+    If you haven't provisioned infrastructure on AWS using my github actions guide so, go ahead and follow step 3 and 4 as well.
 2. Create OIDC to connect AWS with GitHub. Do following steps to create OIDC provider in your AWS account.
     1. Go to **IAM** dashboard and form left pane select **Identity Providers**.
     2. On top right corner of page click on **Add Provider**.
