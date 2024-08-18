@@ -13,8 +13,8 @@ If you are trying to build docker image so please make sure that you have docker
 environment you are trying to build docker image.\
 For more information about building docker image please refer **Dockerfile Section** down below.
 
-### If installing helm chart on K8S cluster
-If you are trying to install helm chart in K8S cluster so please make sure following things.
+### If installing helm chart manually on K8S cluster
+If you are trying to install helm chart manually in K8S cluster so please make sure following things.
 1) Helm should be installed and properly working on environment.
 2) Set values in **values.yaml**, default values will also work but dubble check those values according to your environment configurations. For more information about setting variables please refer **Helm Chart Section** down below.
 3) You must have installed **Nginx ingress controller** on your K8S cluster. You can install it with following command. (This step is for deployment other than EKS only. For EKS, AWS LoadBalancer Controller will be deployed by Terraform)
@@ -59,12 +59,9 @@ docker pull docker.io/jawad57903/demo-app:latest
 The folder **javaWebApp-helm** contains all files related to helm chart by using which you can deploy this Java Web App on any K8S cluster.\
 Just edit environment variables according to your requirements in ```javaWebApp-helm/values.yaml```\
 Following are few variables which you must consider changing.
-1) clusterEnvironmentEks
-Set this variable to false if you are not deploying this hlem chart on EKS. By using this variable ingress resource decides whether to add annotations for AWS LoadBalancer Controller or Nginx Ingress controller.
-2) repository and tag
-Set these variables and make sure your cluster have access to specified repo so that pods can pull image. I have set default value to my public docker repo image. You can use it for deploying and testing this helm chart on any cluster as far as it will have conectivity to internet.
-3) host
-This variable sets the host name from which ingress resource will be accepting traffic. Default value is empty which acts as wildcard and user will be able to access app by directly hiting Cluster/LoadBlancer IP address. If you will set this variable, so please make sure to do DNS configurations for the host that you will specify so that it can resolve traffic to cluster.
+1) **clusterEnvironmentEks**, Set this variable to false if you are not deploying this hlem chart on EKS. By using this variable ingress resource decides whether to add annotations for AWS LoadBalancer Controller or Nginx Ingress controller.
+2) **repository and tag**, Set these variables and make sure your cluster have access to specified repo so that pods can pull image. I have set default value to my public docker repo image. You can use it for deploying and testing this helm chart on any cluster as far as it will have conectivity to internet.
+3) **host**, This variable sets the host name from which ingress resource will be accepting traffic. Default value is empty which acts as wildcard and user will be able to access app by directly hiting Cluster/LoadBlancer IP address. If you will set this variable, so please make sure to do DNS configurations for the host that you will specify so that it can resolve traffic to cluster.
 
 After that either you can deploy it directly using helm command or by using **run-helm.sh** bash script available in this repo.\
 The final deployment will consist of following objects.

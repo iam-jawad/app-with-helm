@@ -14,7 +14,7 @@ There are two workflows, First one is for provisioning and deployment. Which wil
 - **Apply Terraform code**
 - **Install helm chart**
 
-![deploy workflow png](https://raw.githubusercontent.com/iam-jawad/DevOpsAssessment/main/.github/deploy-workflow.png)
+![deploy workflow png](https://raw.githubusercontent.com/iam-jawad/app-with-helm/main/.github/install-workflow.png)
 
 Second workflow is for uninstalling helm chart and destroy whole provisioned infrastructure. It can be triggered manually. In which it will,
 
@@ -22,7 +22,7 @@ Second workflow is for uninstalling helm chart and destroy whole provisioned inf
 - **Uninstall helm chart**
 - **Perform Terraform destroy**
 
-![deploy workflow png](https://raw.githubusercontent.com/iam-jawad/DevOpsAssessment/main/.github/destroy-workflow.png)
+![deploy workflow png](https://raw.githubusercontent.com/iam-jawad/app-with-helm/main/.github/uninstall-workflow.png)
 
 ## Pre-Requisite
 You will have to setup follwoing things to run this workflows.
