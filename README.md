@@ -4,11 +4,11 @@ This repo contains following components.
 - A java web application source code in folder **javaWebApp**.
 - **Dockerfile** to build docker image of **javaWebApp**.
 - Helm chart in folder **javaWebAppHelm** to run **javaWebApp** in K8S cluster.
-- A bash script **run-helm.sh** which can spin up **javaWebApp** from helm chat available in this repo.
+- A bash script **run-helm.sh** which can spin up **javaWebApp** from helm chart available in this repo.
 - GitHub Actions in **.github** folder. This folder contains it's own readme file. Please have a look on it to properly setup github actions automation on this repo.
 
 ## Pre-Requisite
-### If building docker image
+### If building docker image manually
 If you are trying to build docker image so please make sure that you have docker installed and running properly in whatever 
 environment you are trying to build docker image.\
 For more information about building docker image please refer **Dockerfile Section** down below.
@@ -17,11 +17,11 @@ For more information about building docker image please refer **Dockerfile Secti
 If you are trying to install helm chart manually in K8S cluster so please make sure following things.
 1) Helm should be installed and properly working on environment.
 2) Set values in **values.yaml**, default values will also work but dubble check those values according to your environment configurations. For more information about setting variables please refer **Helm Chart Section** down below.
-3) You must have installed **Nginx ingress controller** on your K8S cluster. You can install it with following command. (This step is for deployment other than EKS only. For EKS, AWS LoadBalancer Controller will be deployed by Terraform)
+3) You must have installed **Nginx ingress controller** on your K8S cluster. You can install it with following command. (This step is for deployment other than EKS only. For EKS, AWS LoadBalancer Controller will be deployed by Terraform. If you have used [this repo](https://github.com/iam-jawad/iac-with-terraform) to provisioning infrastructure on AWS)
 ```sh
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 ```
-4) Make sure you have deployed metrics server and it is working properly on your cluster (This step is for local deployment only. For EKS it will be done by Terraform)
+4) Make sure you have deployed metrics server and it is working properly on your cluster (This step is for local deployment only. For EKS it will be done by Terraform. If you have used [this repo](https://github.com/iam-jawad/iac-with-terraform) to provisioning infrastructure on AWS)
 
 ## Java Web App
 
